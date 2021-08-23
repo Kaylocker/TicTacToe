@@ -61,6 +61,7 @@ public class GameController : MonoBehaviour
             gameGridButton[i].image.sprite = null;
         }
     }
+
     public void ButtonAction(int numberGridButton)
     {
         isGameActive = true;
@@ -77,6 +78,7 @@ public class GameController : MonoBehaviour
 
         isEnemyTurn = true;
     }
+
     public void ChangeCurrentGameSymbol()
     {
         if (isGameActive)
@@ -97,6 +99,7 @@ public class GameController : MonoBehaviour
             currentSymbol = (int)GameSymbol.O;
         }
     }
+
     private void SetStartGameSymbol()
     {
         if (currentSymbol == (int)GameSymbol.O)
@@ -110,6 +113,7 @@ public class GameController : MonoBehaviour
             currentGameSymbolIcon[(int)GameSymbol.X].SetActive(true);
         }
     }
+
     public static bool CheckEnemyTurn()
     {
         if (isEnemyTurn)
@@ -121,14 +125,17 @@ public class GameController : MonoBehaviour
             return false;
         }
     }
+
     public static void SetEnemyTurn(bool value)
     {
         isEnemyTurn = value;
     }
+
     public static int GetCurrentPlayerSymbol()
     {
         return currentSymbol;
     }
+
     public void Quit()
     {
         Application.Quit();

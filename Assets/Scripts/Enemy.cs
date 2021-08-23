@@ -26,6 +26,7 @@ public class Enemy : MonoBehaviour
         GameController.SetEnemyTurn(false);
         SetCurrentSymbol();
     }
+
     private void SetCurrentSymbol()
     {
         int playerSymbol = GameController.GetCurrentPlayerSymbol();
@@ -41,6 +42,7 @@ public class Enemy : MonoBehaviour
 
         GetCurrentActiveButtons();
     }
+
     private void GetCurrentActiveButtons()
     {
         int counter = 0;
@@ -57,6 +59,7 @@ public class Enemy : MonoBehaviour
 
         MakeStep();
     }
+
     private void MakeStep()
     {
         int random = Random.Range(0, currentActiveButtons.Count);

@@ -48,6 +48,7 @@ public class GameOverController : MonoBehaviour
         GameController.ResetGame = true;
         HideGameOverLines();
     }
+
     private void HideGameOverLines()
     {
         for (int i = 0; i < sizeLineGrid; i++)
@@ -61,6 +62,7 @@ public class GameOverController : MonoBehaviour
             diagonalGameOverLines[i].SetActive(false);
         }
     }
+
     private bool CatchGameOver()
     {
         SetGameSymbolsGridContain();
@@ -98,6 +100,7 @@ public class GameOverController : MonoBehaviour
 
         return false;
     }
+
     private void SetGameSymbolsGridContain()
     {
         int counter = 0;
@@ -120,6 +123,7 @@ public class GameOverController : MonoBehaviour
             counter++;
         }
     }
+
     private bool CheckVerticalCombinationEndGame()
     {
         int?[,] verticalCombination = new int?[sizeLineGrid, sizeLineGrid];
@@ -140,6 +144,7 @@ public class GameOverController : MonoBehaviour
 
         return isVerticalCombinationCompleted;
     }
+
     private bool CheckHorizontalCombinationEndGame()
     {
         int?[,] horizontalCombination = new int?[sizeLineGrid, sizeLineGrid];
@@ -159,6 +164,7 @@ public class GameOverController : MonoBehaviour
 
         return isHorizontalCombinationCompleted;
     }
+
     private bool CheckDiagonalCombinationEndGame()
     {
         int?[,] diagonalCombination = new int?[COUNT_DIAGONAL_COMBINATION, sizeLineGrid];
@@ -193,6 +199,7 @@ public class GameOverController : MonoBehaviour
 
         return isDiagonalCombinationCompleted;
     }
+
     private bool CheckCurrentCombination(int?[,] grid)
     {
         int? currentCombinationLine = 0;
@@ -228,6 +235,7 @@ public class GameOverController : MonoBehaviour
 
         return false;
     }
+
     private bool CheckStandOffCombinationEndGame()
     {
         int counterActiveButtons = 0;
