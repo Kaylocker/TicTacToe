@@ -1,16 +1,15 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class Enemy : MonoBehaviour
 {
-    [Header("Set In Inspector")]
-    public Button[] gameGridButton;
-    public Sprite[] gameIcon;
+    [SerializeField] private Button[] gameGridButton;
+    [SerializeField] private Sprite[] gameIcon;
 
     private bool myTurn = false;
     private int? currentSymbol;
+    private const int gameSymbol_O = 0, gameSymbol_X = 1;
     private List<Button> currentActiveButtons;
 
     private void Update()
@@ -31,13 +30,13 @@ public class Enemy : MonoBehaviour
     {
         int playerSymbol = GameController.GetCurrentPlayerSymbol();
 
-        if (playerSymbol == (int)GameSymbol.O)
+        if (playerSymbol == gameSymbol_O)
         {
-            currentSymbol = (int)GameSymbol.X;
+            currentSymbol = gameSymbol_X;
         }
         else
         {
-            currentSymbol = (int)GameSymbol.O;
+            currentSymbol = gameSymbol_O;
         }
 
         GetCurrentActiveButtons();
@@ -46,7 +45,7 @@ public class Enemy : MonoBehaviour
     private void GetCurrentActiveButtons()
     {
         int counter = 0;
-        
+
         foreach (var item in gameGridButton)
         {
             if (gameGridButton[counter].interactable)

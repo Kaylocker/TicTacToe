@@ -1,20 +1,20 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public enum GameSymbol { O, X, EMPTY = -1 }
 
 public class GameController : MonoBehaviour
 {
-    [Header("Set In Inspector")]
-    public Sprite[] gameIcon;
-    public Button[] gameGridButton;
-    public Button changerPlayerSymbol;
-    public GameObject[] currentGameSymbolIcon;
+    [SerializeField] private Sprite[] gameIcon;
+    [SerializeField] private Button[] gameGridButtons;
+    [SerializeField] private Button changerPlayerSymbol;
+    [SerializeField] private GameObject[] currentGameSymbolIcon;
 
     private static bool isEnemyTurn;
     private static bool isGameActive;
     private static bool isCurrentGameEnded = false;
-    private static int currentSymbol = (int)GameSymbol.O;
+    private static int currentSymbol = gameSymbol_O;
+    private static int[] gameGridButtonsStatus;
+    private const int gameSymbol_O = 0, gameSymbol_X = 1;
 
     public static bool IsGameActive { get => isGameActive; set => isGameActive = value; }
     public static bool IsCurrentGameEnded
@@ -54,11 +54,12 @@ public class GameController : MonoBehaviour
     {
         isGameActive = false;
         isEnemyTurn = false;
+        gameGridButtonsStatus = new int[gameGridButtons.Length];
 
-        for (int i = 0; i < gameGridButton.Length; i++)
+        for (int i = 0; i < gameGridButtons.Length; i++)
         {
-            gameGridButton[i].interactable = true;
-            gameGridButton[i].image.sprite = null;
+            gameGridButtons[i].interactable = true;
+            gameGridButtons[i].image.sprite = null;
         }
     }
 
@@ -73,8 +74,9 @@ public class GameController : MonoBehaviour
 
         changerPlayerSymbol.interactable = false;
 
-        gameGridButton[numberGridButton].image.sprite = gameIcon[currentSymbol];
-        gameGridButton[numberGridButton].interactable = false;
+        gameGridButtons[numberGridButton].image.sprite = gameIcon[currentSymbol];
+        gameGridButtonsStatus[numberGridButton] = currentSymbol;
+        gameGridButtons[numberGridButton].interactable = false;
 
         isEnemyTurn = true;
     }
@@ -86,54 +88,52 @@ public class GameController : MonoBehaviour
             return;
         }
 
-        if (currentSymbol == (int)GameSymbol.O)
+        if (currentSymbol == gameSymbol_O)
         {
-            currentGameSymbolIcon[(int)GameSymbol.O].SetActive(false);
-            currentGameSymbolIcon[(int)GameSymbol.X].SetActive(true);
-            currentSymbol = (int)GameSymbol.X;
+            currentGameSymbolIcon[gameSymbol_O].SetActive(false);
+            currentGameSymbolIcon[gameSymbol_X].SetActive(true);
+            currentSymbol = gameSymbol_X;
         }
         else
         {
-            currentGameSymbolIcon[(int)GameSymbol.X].SetActive(false);
-            currentGameSymbolIcon[(int)GameSymbol.O].SetActive(true);
-            currentSymbol = (int)GameSymbol.O;
+            currentGameSymbolIcon[gameSymbol_X].SetActive(false);
+            currentGameSymbolIcon[gameSymbol_O].SetActive(true);
+            currentSymbol = gameSymbol_O;
         }
     }
 
     private void SetStartGameSymbol()
     {
-        if (currentSymbol == (int)GameSymbol.O)
+        if (currentSymbol == gameSymbol_O)
         {
-            currentGameSymbolIcon[(int)GameSymbol.O].SetActive(true);
-            currentGameSymbolIcon[(int)GameSymbol.X].SetActive(false);
+            currentGameSymbolIcon[gameSymbol_O].SetActive(true);
+            currentGameSymbolIcon[gameSymbol_X].SetActive(false);
         }
         else
         {
-            currentGameSymbolIcon[(int)GameSymbol.O].SetActive(false);
-            currentGameSymbolIcon[(int)GameSymbol.X].SetActive(true);
+            currentGameSymbolIcon[gameSymbol_O].SetActive(false);
+            currentGameSymbolIcon[gameSymbol_X].SetActive(true);
         }
     }
 
     public static bool CheckEnemyTurn()
     {
-        if (isEnemyTurn)
-        {
-            return isEnemyTurn;
-        }
-        else
-        {
-            return false;
-        }
+        return isEnemyTurn;
     }
 
-    public static void SetEnemyTurn(bool value)
+    public static void SetEnemyTurn(bool turn)
     {
-        isEnemyTurn = value;
+        isEnemyTurn = turn;
     }
 
     public static int GetCurrentPlayerSymbol()
     {
         return currentSymbol;
+    }
+
+    public static int GetConcreteGridButtonStatus(int numberButton)
+    {
+        return gameGridButtonsStatus[numberButton];
     }
 
     public void Quit()

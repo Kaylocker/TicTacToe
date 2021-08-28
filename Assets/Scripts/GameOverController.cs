@@ -3,17 +3,17 @@ using UnityEngine.UI;
 
 public class GameOverController : MonoBehaviour
 {
-    [Header("Set In Inspector")]
-    public Button[] gameGridButton;
-    public Sprite[] gameIcon;
-    public GameObject[] verticalGameOverLines;
-    public GameObject[] horizontalGameOverLines;
-    public GameObject[] diagonalGameOverLines;
+    [SerializeField] private Button[] gameGridButton;
+    [SerializeField] private Sprite[] gameIcon;
+    [SerializeField] private GameObject[] verticalGameOverLines;
+    [SerializeField] private GameObject[] horizontalGameOverLines;
+    [SerializeField] private GameObject[] diagonalGameOverLines;
 
     private const int COUNT_DIAGONAL_COMBINATION = 2;
     private int?[] gridSymbolsStatus;
     private int numberOfCompletedGameOverLine;
     private int sizeGrid, sizeLineGrid;
+    private const int gameSymbol_O = 0, gameSymbol_X = 1;
     private bool isSomeOneDoStep;
     private bool checkThisStepOnWin = false;
 
@@ -107,13 +107,13 @@ public class GameOverController : MonoBehaviour
 
         foreach (var item in gameGridButton)
         {
-            if (item.interactable == false && item.image.sprite == gameIcon[(int)GameSymbol.O])
+            if (item.interactable == false && GameController.GetConcreteGridButtonStatus(counter)==gameSymbol_O)
             {
-                gridSymbolsStatus[counter] = (int)GameSymbol.O;
+                gridSymbolsStatus[counter] = gameSymbol_O;
             }
-            else if (item.interactable == false && item.image.sprite == gameIcon[(int)GameSymbol.X])
+            else if (item.interactable == false && GameController.GetConcreteGridButtonStatus(counter) == gameSymbol_X)
             {
-                gridSymbolsStatus[counter] = (int)GameSymbol.X;
+                gridSymbolsStatus[counter] = gameSymbol_X;
             }
             else
             {
@@ -200,18 +200,18 @@ public class GameOverController : MonoBehaviour
         return isDiagonalCombinationCompleted;
     }
 
-    private bool CheckCurrentCombination(int?[,] grid)
+    private bool CheckCurrentCombination(int?[,] gridCombination)
     {
         int? currentCombinationLine = 0;
 
-        for (int i = 0; i < grid.GetLength(0); i++)
+        for (int i = 0; i < gridCombination.GetLength(0); i++)
         {
-            for (int k = 0; k < grid.GetLength(1); k++)
+            for (int k = 0; k < gridCombination.GetLength(1); k++)
             {
-                currentCombinationLine += grid[i, k];
+                currentCombinationLine += gridCombination[i, k];
             }
 
-            if (currentCombinationLine == (int)GameSymbol.O)
+            if (currentCombinationLine == 0)
             {
                 numberOfCompletedGameOverLine = i;
                 return true;
@@ -219,9 +219,9 @@ public class GameOverController : MonoBehaviour
 
             currentCombinationLine = 0;
 
-            for (int j = 0; j < grid.GetLength(1); j++)
+            for (int j = 0; j < gridCombination.GetLength(1); j++)
             {
-                currentCombinationLine += grid[i, j];
+                currentCombinationLine += gridCombination[i, j];
             }
 
             if (currentCombinationLine == sizeLineGrid)
@@ -248,13 +248,6 @@ public class GameOverController : MonoBehaviour
             }
         }
 
-        if (counterActiveButtons == 0)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return counterActiveButtons == 0;
     }
 }
