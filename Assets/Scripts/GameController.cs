@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-
 public class GameController : MonoBehaviour
 {
     [SerializeField] private Sprite[] gameIcon;
@@ -13,9 +12,11 @@ public class GameController : MonoBehaviour
     private static bool isGameActive;
     private static bool isCurrentGameEnded = false;
     private static int currentSymbol = gameSymbol_O;
-    private static int[] gameGridButtonsStatus;
+    private static int?[] gameGridButtonsStatus;
+    private static int currentEmptyNumberOfGridSymbolsStatus;
     private const int gameSymbol_O = 0, gameSymbol_X = 1;
 
+    public static int CurrentEmptyNumberOfGridSymbolsStatus { get => currentEmptyNumberOfGridSymbolsStatus; }
     public static bool IsGameActive { get => isGameActive; set => isGameActive = value; }
     public static bool IsCurrentGameEnded
     {
@@ -54,12 +55,14 @@ public class GameController : MonoBehaviour
     {
         isGameActive = false;
         isEnemyTurn = false;
-        gameGridButtonsStatus = new int[gameGridButtons.Length];
+        gameGridButtonsStatus = new int?[gameGridButtons.Length];
+        currentEmptyNumberOfGridSymbolsStatus = 0;
 
         for (int i = 0; i < gameGridButtons.Length; i++)
         {
             gameGridButtons[i].interactable = true;
             gameGridButtons[i].image.sprite = null;
+            gameGridButtonsStatus[i] = null;
         }
     }
 
@@ -131,7 +134,15 @@ public class GameController : MonoBehaviour
         return currentSymbol;
     }
 
-    public static int GetConcreteGridButtonStatus(int numberButton)
+    public static void SetEnemyButtonStatus(int numberButton, int symbolNumber)
+    {
+        if (gameGridButtonsStatus[numberButton] == null)
+        {
+            gameGridButtonsStatus[numberButton] = symbolNumber;
+        }
+    }
+
+    public static int? GetConcreteGridButtonStatus(int numberButton)
     {
         return gameGridButtonsStatus[numberButton];
     }

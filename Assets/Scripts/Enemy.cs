@@ -8,9 +8,10 @@ public class Enemy : MonoBehaviour
     [SerializeField] private Sprite[] gameIcon;
 
     private bool myTurn = false;
-    private int? currentSymbol;
+    private int currentSymbol;
     private const int gameSymbol_O = 0, gameSymbol_X = 1;
     private List<Button> currentActiveButtons;
+    private List<int> concreteNumbersGridButtons;
 
     private void Update()
     {
@@ -22,7 +23,10 @@ public class Enemy : MonoBehaviour
         }
 
         currentActiveButtons = new List<Button>();
+        concreteNumbersGridButtons = new List<int>();
+
         GameController.SetEnemyTurn(false);
+
         SetCurrentSymbol();
     }
 
@@ -51,6 +55,7 @@ public class Enemy : MonoBehaviour
             if (gameGridButton[counter].interactable)
             {
                 currentActiveButtons.Add(item);
+                concreteNumbersGridButtons.Add(counter);
             }
 
             counter++;
@@ -68,13 +73,17 @@ public class Enemy : MonoBehaviour
         {
             if (counter == random)
             {
-                item.image.sprite = gameIcon[(int)currentSymbol];
+                int concreteNumber = concreteNumbersGridButtons[counter];
+
+                GameController.SetEnemyButtonStatus(concreteNumber, currentSymbol);
+                item.image.sprite = gameIcon[currentSymbol];
                 item.interactable = false;
             }
 
             counter++;
         }
 
+        concreteNumbersGridButtons = null;
         currentActiveButtons = null;
     }
 }
