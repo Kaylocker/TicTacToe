@@ -13,10 +13,8 @@ public class GameController : MonoBehaviour
     private static bool isCurrentGameEnded = false;
     private static int currentSymbol = gameSymbol_O;
     private static int?[] gameGridButtonsStatus;
-    private static int currentEmptyNumberOfGridSymbolsStatus;
     private const int gameSymbol_O = 0, gameSymbol_X = 1;
 
-    public static int CurrentEmptyNumberOfGridSymbolsStatus { get => currentEmptyNumberOfGridSymbolsStatus; }
     public static bool IsGameActive { get => isGameActive; set => isGameActive = value; }
     public static bool IsCurrentGameEnded
     {
@@ -56,7 +54,6 @@ public class GameController : MonoBehaviour
         isGameActive = false;
         isEnemyTurn = false;
         gameGridButtonsStatus = new int?[gameGridButtons.Length];
-        currentEmptyNumberOfGridSymbolsStatus = 0;
 
         for (int i = 0; i < gameGridButtons.Length; i++)
         {
