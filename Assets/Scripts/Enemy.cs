@@ -9,7 +9,7 @@ public class Enemy : MonoBehaviour
 
     private bool myTurn = false;
     private int currentSymbol;
-    private const int gameSymbol_O = 0, gameSymbol_X = 1;
+    private const int GAMESYMBOL_O = 0, GAMESYMBOL_X = 1;
     private List<Button> currentActiveButtons;
     private List<int> concreteNumbersGridButtons;
 
@@ -34,13 +34,13 @@ public class Enemy : MonoBehaviour
     {
         int playerSymbol = GameController.GetCurrentPlayerSymbol();
 
-        if (playerSymbol == gameSymbol_O)
+        if (playerSymbol == GAMESYMBOL_O)
         {
-            currentSymbol = gameSymbol_X;
+            currentSymbol = GAMESYMBOL_X;
         }
         else
         {
-            currentSymbol = gameSymbol_O;
+            currentSymbol = GAMESYMBOL_O;
         }
 
         GetCurrentActiveButtons();
