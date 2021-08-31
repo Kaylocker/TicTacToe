@@ -11,9 +11,9 @@ public class GameController : MonoBehaviour
     private static bool isEnemyTurn;
     private static bool isGameActive;
     private static bool isCurrentGameEnded = false;
-    private static int currentSymbol = gameSymbol_O;
+    private static int currentSymbol = GAMESYMBOL_O;
     private static int?[] gameGridButtonsStatus;
-    private const int gameSymbol_O = 0, gameSymbol_X = 1;
+    private const int GAMESYMBOL_O = 0, GAMESYMBOL_X = 1;
 
     public static bool IsGameActive { get => isGameActive; set => isGameActive = value; }
     public static bool IsCurrentGameEnded
@@ -88,31 +88,31 @@ public class GameController : MonoBehaviour
             return;
         }
 
-        if (currentSymbol == gameSymbol_O)
+        if (currentSymbol == GAMESYMBOL_O)
         {
-            currentGameSymbolIcon[gameSymbol_O].SetActive(false);
-            currentGameSymbolIcon[gameSymbol_X].SetActive(true);
-            currentSymbol = gameSymbol_X;
+            currentGameSymbolIcon[GAMESYMBOL_O].SetActive(false);
+            currentGameSymbolIcon[GAMESYMBOL_X].SetActive(true);
+            currentSymbol = GAMESYMBOL_X;
         }
         else
         {
-            currentGameSymbolIcon[gameSymbol_X].SetActive(false);
-            currentGameSymbolIcon[gameSymbol_O].SetActive(true);
-            currentSymbol = gameSymbol_O;
+            currentGameSymbolIcon[GAMESYMBOL_X].SetActive(false);
+            currentGameSymbolIcon[GAMESYMBOL_O].SetActive(true);
+            currentSymbol = GAMESYMBOL_O;
         }
     }
 
     private void SetStartGameSymbol()
     {
-        if (currentSymbol == gameSymbol_O)
+        if (currentSymbol == GAMESYMBOL_O)
         {
-            currentGameSymbolIcon[gameSymbol_O].SetActive(true);
-            currentGameSymbolIcon[gameSymbol_X].SetActive(false);
+            currentGameSymbolIcon[GAMESYMBOL_O].SetActive(true);
+            currentGameSymbolIcon[GAMESYMBOL_X].SetActive(false);
         }
         else
         {
-            currentGameSymbolIcon[gameSymbol_O].SetActive(false);
-            currentGameSymbolIcon[gameSymbol_X].SetActive(true);
+            currentGameSymbolIcon[GAMESYMBOL_O].SetActive(false);
+            currentGameSymbolIcon[GAMESYMBOL_X].SetActive(true);
         }
     }
 

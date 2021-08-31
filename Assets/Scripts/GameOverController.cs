@@ -13,7 +13,7 @@ public class GameOverController : MonoBehaviour
     private int?[] gridSymbolsStatus;
     private int numberOfCompletedGameOverLine;
     private int sizeGrid, sizeLineGrid;
-    private const int gameSymbol_O = 0, gameSymbol_X = 1;
+    private const int GAMESYMBOL_O = 0, GAMESYMBOL_X = 1;
     private bool isSomeOneDoStep;
     private bool checkThisStepOnWin = false;
 
@@ -107,13 +107,13 @@ public class GameOverController : MonoBehaviour
 
         foreach (var item in gameGridButton)
         {
-            if (item.interactable == false && GameController.GetConcreteGridButtonStatus(counter)==gameSymbol_O)
+            if (item.interactable == false && GameController.GetConcreteGridButtonStatus(counter)==GAMESYMBOL_O)
             {
-                gridSymbolsStatus[counter] = gameSymbol_O;
+                gridSymbolsStatus[counter] = GAMESYMBOL_O;
             }
-            else if (item.interactable == false && GameController.GetConcreteGridButtonStatus(counter) == gameSymbol_X)
+            else if (item.interactable == false && GameController.GetConcreteGridButtonStatus(counter) == GAMESYMBOL_X)
             {
-                gridSymbolsStatus[counter] = gameSymbol_X;
+                gridSymbolsStatus[counter] = GAMESYMBOL_X;
             }
             else
             {
