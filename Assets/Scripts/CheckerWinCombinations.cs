@@ -1,11 +1,11 @@
 using UnityEngine;
 
-public  abstract class CheckerWinCombinations : MonoBehaviour
+public abstract class CheckerWinCombinations : MonoBehaviour
 {
     protected int COUNT_DIAGONAL_COMBINATION = 2;
     protected int numberOfCompletedGameOverLine;
-    
-    protected bool CheckVerticalCombinationEndGame(int? [] gridSymbolsStatus)
+
+    protected bool CheckVerticalCombinationEndGame(int?[] gridSymbolsStatus)
     {
         int sizeGrid = gridSymbolsStatus.Length;
         int sizeLineGrid = (int)Mathf.Sqrt(sizeGrid);

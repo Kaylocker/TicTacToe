@@ -97,10 +97,10 @@ public class Enemy3D : MonoBehaviour
                 symbolPos += Vector3.up;
                 Instantiate(gameSymbols[currentSymbol], symbolPos, Quaternion.identity);
 
+                buttonsStatus[concreteNumber].GameSymbol = currentSymbol;
                 buttonsStatus[concreteNumber].ButtonOff();
 
                 Button3D.SetStepMaked();
-                GameController3D.SetEnemyButtonStatus(concreteNumber, currentSymbol);
             }
 
             counter++;

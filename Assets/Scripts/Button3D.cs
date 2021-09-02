@@ -7,13 +7,45 @@ public class Button3D : MonoBehaviour
     private bool isWorking = true;
     private int? gameSymbol = null;
 
-    public bool IsButtonActivated { get => isButtonActivated; }
-    public int? GameSymbol { get => gameSymbol; }
+    public bool IsButtonActivated
+    {
+        get => isButtonActivated;
+
+        set
+        {
+            if (isButtonActivated == false && value != false)
+            {
+                isButtonActivated = value;
+            }
+            else
+            {
+                return;
+            }
+
+        }
+
+    }
     public bool IsWorking { get => isWorking; }
+    public int? GameSymbol
+    {
+        get => gameSymbol;
+
+        set
+        {
+            if (gameSymbol == null)
+            {
+                gameSymbol = value;
+            }
+            else
+            {
+                return;
+            }
+        }
+    }
 
     private void OnMouseDown()
     {
-        if (GameController3D.CheckEnemyTurn() == true)
+        if (GameController3D.CheckEnemyTurn() == true || GameController3D.IsCurrentGameEnded)
         {
             return;
         }
@@ -37,9 +69,9 @@ public class Button3D : MonoBehaviour
 
     public void ButtonOff()
     {
-        if(isWorking)
+        if (isWorking)
         {
-            isWorking = false ;
+            isWorking = false;
         }
     }
 }

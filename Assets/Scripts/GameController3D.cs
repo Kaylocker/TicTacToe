@@ -10,14 +10,27 @@ public class GameController3D : MonoBehaviour
 
     private Button3D[] buttonsStatus;
     private const int GAMESYMBOL_O = 0, GAMESYMBOL_X = 1;
-    private static int?[] gameGridButtonsStatus;
     private static int currentSymbol = GAMESYMBOL_O;
     private static bool isEnemyTurn;
     private static bool isGameActive;
     private static bool isCurrentGameEnded = false;
 
+    public static bool ResetGame { get; set; }
     public static int CurrentSymbol { get => currentSymbol; }
-    public static bool IsCurrentGameEnded { get => isCurrentGameEnded; }
+    public static bool IsCurrentGameEnded
+    {
+        get => isCurrentGameEnded;
+
+        set
+        {
+            isCurrentGameEnded = value;
+
+            if (isCurrentGameEnded)
+            {
+                isGameActive = false;
+            }
+        }
+    }
 
     private void Start()
     {
@@ -44,13 +57,6 @@ public class GameController3D : MonoBehaviour
         isGameActive = false;
 
         GetButtonsStatusArray();
-
-        gameGridButtonsStatus = new int?[buttons.Length];
-
-        for (int i = 0; i < buttons.Length; i++)
-        {
-            gameGridButtonsStatus[i] = null;
-        }
     }
 
     private void GetButtonsStatusArray()
@@ -113,7 +119,7 @@ public class GameController3D : MonoBehaviour
                 symbolPos += Vector3.up;
                 Instantiate(gameSymbols[currentSymbol], symbolPos, Quaternion.identity);
 
-                gameGridButtonsStatus[counter] = currentSymbol;
+                buttonsStatus[counter].GameSymbol = currentSymbol;
                 buttonsStatus[counter].ButtonOff();
             }
 
@@ -134,14 +140,6 @@ public class GameController3D : MonoBehaviour
     public static int GetCurrentPlayerSymbol()
     {
         return currentSymbol;
-    }
-
-    public static void SetEnemyButtonStatus(int numberButton, int symbolNumber)
-    {
-        if (gameGridButtonsStatus[numberButton] == null)
-        {
-            gameGridButtonsStatus[numberButton] = symbolNumber;
-        }
     }
 
 }
