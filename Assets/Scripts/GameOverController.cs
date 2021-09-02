@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GameOverController : MonoBehaviour
+public class GameOverController : CheckerWinCombinations
 {
     [SerializeField] private Button[] gameGridButton;
     [SerializeField] private Sprite[] gameIcon;
@@ -9,10 +9,9 @@ public class GameOverController : MonoBehaviour
     [SerializeField] private GameObject[] horizontalGameOverLines;
     [SerializeField] private GameObject[] diagonalGameOverLines;
 
-    private const int COUNT_DIAGONAL_COMBINATION = 2;
+
     private const int GAMESYMBOL_O = 0, GAMESYMBOL_X = 1;
     private int?[] gridSymbolsStatus;
-    private int numberOfCompletedGameOverLine;
     private int sizeGrid, sizeLineGrid;
     private bool isSomeOneDoStep;
     private bool checkThisStepOnWin = false;
@@ -67,7 +66,7 @@ public class GameOverController : MonoBehaviour
     {
         SetGameSymbolsGridContain();
 
-        bool verticalWin = CheckVerticalCombinationEndGame();
+        bool verticalWin = CheckVerticalCombinationEndGame(gridSymbolsStatus);
 
         if (verticalWin)
         {
@@ -75,7 +74,7 @@ public class GameOverController : MonoBehaviour
             return true;
         }
 
-        bool horizontalWin = CheckHorizontalCombinationEndGame();
+        bool horizontalWin = CheckHorizontalCombinationEndGame(gridSymbolsStatus);
 
         if (horizontalWin)
         {
@@ -83,7 +82,7 @@ public class GameOverController : MonoBehaviour
             return true;
         }
 
-        bool diagonalWin = CheckDiagonalCombinationEndGame();
+        bool diagonalWin = CheckDiagonalCombinationEndGame(gridSymbolsStatus);
 
         if (diagonalWin)
         {
@@ -123,119 +122,7 @@ public class GameOverController : MonoBehaviour
             counter++;
         }
     }
-
-    private bool CheckVerticalCombinationEndGame()
-    {
-        int?[,] verticalCombination = new int?[sizeLineGrid, sizeLineGrid];
-
-        for (int i = 0; i < sizeLineGrid; i++)
-        {
-            int counter = i;
-
-            for (int j = 0; j < sizeLineGrid; j++)
-            {
-                verticalCombination[i, j] = gridSymbolsStatus[counter];
-
-                counter += sizeLineGrid;
-            }
-        }
-
-        bool isVerticalCombinationCompleted = CheckCurrentCombination(verticalCombination);
-
-        return isVerticalCombinationCompleted;
-    }
-
-    private bool CheckHorizontalCombinationEndGame()
-    {
-        int?[,] horizontalCombination = new int?[sizeLineGrid, sizeLineGrid];
-
-        int counter = 0;
-
-        for (int i = 0; i < sizeLineGrid; i++)
-        {
-            for (int j = 0; j < sizeLineGrid; j++)
-            {
-                horizontalCombination[i, j] = gridSymbolsStatus[counter];
-                counter++;
-            }
-        }
-
-        bool isHorizontalCombinationCompleted = CheckCurrentCombination(horizontalCombination);
-
-        return isHorizontalCombinationCompleted;
-    }
-
-    private bool CheckDiagonalCombinationEndGame()
-    {
-        int?[,] diagonalCombination = new int?[COUNT_DIAGONAL_COMBINATION, sizeLineGrid];
-
-        int counter = 0;
-
-        for (int i = 0; i < COUNT_DIAGONAL_COMBINATION; i++)
-        {
-            if (i == 0)
-            {
-                for (int j = 0; j < sizeLineGrid; j++)
-                {
-                    diagonalCombination[i, j] = gridSymbolsStatus[counter];
-                    counter += sizeLineGrid;
-                    counter++;
-                }
-            }
-            else
-            {
-                counter = sizeLineGrid - 1;
-
-                for (int j = 0; j < sizeLineGrid; j++)
-                {
-                    diagonalCombination[i, j] = gridSymbolsStatus[counter];
-                    counter += sizeLineGrid;
-                    counter--;
-                }
-            }
-        }
-
-        bool isDiagonalCombinationCompleted = CheckCurrentCombination(diagonalCombination);
-
-        return isDiagonalCombinationCompleted;
-    }
-
-    private bool CheckCurrentCombination(int?[,] gridCombination)
-    {
-        int? currentCombinationLine = 0;
-
-        for (int i = 0; i < gridCombination.GetLength(0); i++)
-        {
-            for (int k = 0; k < gridCombination.GetLength(1); k++)
-            {
-                currentCombinationLine += gridCombination[i, k];
-            }
-
-            if (currentCombinationLine == 0)
-            {
-                numberOfCompletedGameOverLine = i;
-                return true;
-            }
-
-            currentCombinationLine = 0;
-
-            for (int j = 0; j < gridCombination.GetLength(1); j++)
-            {
-                currentCombinationLine += gridCombination[i, j];
-            }
-
-            if (currentCombinationLine == sizeLineGrid)
-            {
-                numberOfCompletedGameOverLine = i;
-                return true;
-            }
-
-            currentCombinationLine = 0;
-        }
-
-        return false;
-    }
-
+    
     private bool CheckStandOffCombinationEndGame()
     {
         int counterActiveButtons = 0;
