@@ -1,12 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Button3D : MonoBehaviour
 {
+    private static bool isMakeStep = false;
     private bool isButtonActivated = false;
     private bool isWorking = true;
-    private static bool isMakeStep = false;
     private int? gameSymbol = null;
 
     public bool IsButtonActivated { get => isButtonActivated; }
@@ -32,9 +30,9 @@ public class Button3D : MonoBehaviour
         return isMakeStep;
     }
 
-    public static void SetIsStepMaked(bool statusStep)
+    public static void SetStepMaked()
     {
-        isMakeStep = statusStep;
+        isMakeStep = false;
     }
 
     public void ButtonOff()

@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -18,6 +17,7 @@ public class Enemy3D : MonoBehaviour
     {
         SetButtonsStatusArray();
     }
+
     private void Update()
     {
         myTurn = GameController3D.CheckEnemyTurn();
@@ -44,7 +44,6 @@ public class Enemy3D : MonoBehaviour
         foreach (var item in buttons)
         {
             buttonsStatus[counter] = item.GetComponent<Button3D>();
-            print(buttonsStatus[counter].IsButtonActivated);
             counter++;
         }
     }
@@ -100,7 +99,7 @@ public class Enemy3D : MonoBehaviour
 
                 buttonsStatus[concreteNumber].ButtonOff();
 
-                Button3D.SetIsStepMaked(false);
+                Button3D.SetStepMaked();
                 GameController3D.SetEnemyButtonStatus(concreteNumber, currentSymbol);
             }
 

@@ -10,10 +10,10 @@ public class GameOverController : MonoBehaviour
     [SerializeField] private GameObject[] diagonalGameOverLines;
 
     private const int COUNT_DIAGONAL_COMBINATION = 2;
+    private const int GAMESYMBOL_O = 0, GAMESYMBOL_X = 1;
     private int?[] gridSymbolsStatus;
     private int numberOfCompletedGameOverLine;
     private int sizeGrid, sizeLineGrid;
-    private const int GAMESYMBOL_O = 0, GAMESYMBOL_X = 1;
     private bool isSomeOneDoStep;
     private bool checkThisStepOnWin = false;
 

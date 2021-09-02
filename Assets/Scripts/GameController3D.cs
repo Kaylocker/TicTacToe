@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -35,7 +33,7 @@ public class GameController3D : MonoBehaviour
             isEnemyTurn = true;
             changerGameSymbol.interactable = false;
 
-            Button3D.SetIsStepMaked(false);
+            Button3D.SetStepMaked();
             InstantiateGameSymbol();
         }
     }
@@ -54,6 +52,7 @@ public class GameController3D : MonoBehaviour
             gameGridButtonsStatus[i] = null;
         }
     }
+
     private void GetButtonsStatusArray()
     {
         buttonsStatus = new Button3D[buttons.Length];
@@ -101,8 +100,6 @@ public class GameController3D : MonoBehaviour
             currentSymbol = GAMESYMBOL_O;
         }
     }
-
-   
 
     public void InstantiateGameSymbol()
     {
