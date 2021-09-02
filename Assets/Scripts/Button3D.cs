@@ -3,6 +3,7 @@ using UnityEngine;
 public class Button3D : MonoBehaviour
 {
     private static bool isMakeStep = false;
+    private static bool isGameReset;
     private bool isButtonActivated = false;
     private bool isWorking = true;
     private int? gameSymbol = null;
@@ -43,6 +44,26 @@ public class Button3D : MonoBehaviour
         }
     }
 
+    public bool IsGameReset 
+    {
+        set
+        {
+            if (isGameReset)
+            {
+                return;
+            }
+            else
+            {
+                isGameReset = false;
+                isMakeStep = false;
+                isButtonActivated = false;
+                isWorking = true;
+                gameSymbol = null;
+            }
+        }
+    }
+
+
     private void OnMouseDown()
     {
         if (GameController3D.CheckEnemyTurn() == true || GameController3D.IsCurrentGameEnded)
@@ -74,4 +95,5 @@ public class Button3D : MonoBehaviour
             isWorking = false;
         }
     }
+
 }

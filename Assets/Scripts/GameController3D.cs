@@ -1,14 +1,16 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class GameController3D : MonoBehaviour
 {
     [SerializeField] private GameObject[] buttons;
     [SerializeField] private GameObject[] gameSymbols;
     [SerializeField] private GameObject[] currentGameSymbols;
-    [SerializeField] private Button changerGameSymbol;
+    [SerializeField] private Button changerPlayerSymbol;
 
     private Button3D[] buttonsStatus;
+    private static List<GameObject> activePrefabs;
     private const int GAMESYMBOL_O = 0, GAMESYMBOL_X = 1;
     private static int currentSymbol = GAMESYMBOL_O;
     private static bool isEnemyTurn;
@@ -35,26 +37,54 @@ public class GameController3D : MonoBehaviour
     private void Start()
     {
         SetStartGameSymbol();
-        StartSettings();
+        SetStartSettings();
     }
 
     private void Update()
     {
+        if (ResetGame)
+        {
+            ResetGame = false;
+            isGameActive = false;
+            isEnemyTurn = false;
+            DestroyGameSymbols();
+            ResetButtonsProperties();
+            SetStartSettings();
+            changerPlayerSymbol.interactable = true;
+            isCurrentGameEnded = false;
+        }
+
         if (Button3D.CheckStep() == true && !isEnemyTurn)
         {
             isGameActive = true;
             isEnemyTurn = true;
-            changerGameSymbol.interactable = false;
+            changerPlayerSymbol.interactable = false;
 
             Button3D.SetStepMaked();
             InstantiateGameSymbol();
         }
     }
 
-    private void StartSettings()
+    private void DestroyGameSymbols()
+    {
+        foreach (var item in activePrefabs)
+        {
+            Destroy(item);
+        }
+    }
+
+    private void ResetButtonsProperties()
+    {
+        foreach (var item in buttonsStatus)
+        {
+            item.IsGameReset = true;
+        }
+    }
+    private void SetStartSettings()
     {
         isEnemyTurn = false;
         isGameActive = false;
+        activePrefabs = new List<GameObject>();
 
         GetButtonsStatusArray();
     }
@@ -117,9 +147,9 @@ public class GameController3D : MonoBehaviour
             {
                 Vector3 symbolPos = buttons[counter].transform.position;
                 symbolPos += Vector3.up;
-                Instantiate(gameSymbols[currentSymbol], symbolPos, Quaternion.identity);
-
-                buttonsStatus[counter].GameSymbol = currentSymbol;
+                GameObject gameSymbol =  Instantiate(gameSymbols[currentSymbol], symbolPos, Quaternion.identity);
+                activePrefabs.Add(gameSymbol);
+                 buttonsStatus[counter].GameSymbol = currentSymbol;
                 buttonsStatus[counter].ButtonOff();
             }
 
@@ -140,6 +170,11 @@ public class GameController3D : MonoBehaviour
     public static int GetCurrentPlayerSymbol()
     {
         return currentSymbol;
+    }
+
+    public static void AddGameSymbol(GameObject gameSymbol)
+    {
+        activePrefabs.Add(gameSymbol);
     }
 
 }

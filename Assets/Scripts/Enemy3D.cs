@@ -95,7 +95,8 @@ public class Enemy3D : MonoBehaviour
 
                 Vector3 symbolPos = buttons[concreteNumber].transform.position;
                 symbolPos += Vector3.up;
-                Instantiate(gameSymbols[currentSymbol], symbolPos, Quaternion.identity);
+                GameObject gameSymbol = Instantiate(gameSymbols[currentSymbol], symbolPos, Quaternion.identity);
+                GameController3D.AddGameSymbol(gameSymbol);
 
                 buttonsStatus[concreteNumber].GameSymbol = currentSymbol;
                 buttonsStatus[concreteNumber].ButtonOff();
