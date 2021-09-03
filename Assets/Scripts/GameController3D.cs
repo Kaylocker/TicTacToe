@@ -47,11 +47,12 @@ public class GameController3D : MonoBehaviour
             ResetGame = false;
             isGameActive = false;
             isEnemyTurn = false;
+            changerPlayerSymbol.interactable = true;
+            isCurrentGameEnded = false;
+
             DestroyGameSymbols();
             ResetButtonsProperties();
             SetStartSettings();
-            changerPlayerSymbol.interactable = true;
-            isCurrentGameEnded = false;
         }
 
         if (Button3D.CheckStep() == true && !isEnemyTurn)
@@ -77,9 +78,10 @@ public class GameController3D : MonoBehaviour
     {
         foreach (var item in buttonsStatus)
         {
-            item.IsGameReset = true;
+            item.ResetButton();
         }
     }
+
     private void SetStartSettings()
     {
         isEnemyTurn = false;
@@ -147,9 +149,11 @@ public class GameController3D : MonoBehaviour
             {
                 Vector3 symbolPos = buttons[counter].transform.position;
                 symbolPos += Vector3.up;
-                GameObject gameSymbol =  Instantiate(gameSymbols[currentSymbol], symbolPos, Quaternion.identity);
+                GameObject gameSymbol = Instantiate(gameSymbols[currentSymbol], symbolPos, Quaternion.identity);
+
                 activePrefabs.Add(gameSymbol);
-                 buttonsStatus[counter].GameSymbol = currentSymbol;
+
+                buttonsStatus[counter].GameSymbol = currentSymbol;
                 buttonsStatus[counter].ButtonOff();
             }
 

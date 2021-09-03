@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class GameOverController3D : CheckerWinCombinations
 {
@@ -8,6 +9,9 @@ public class GameOverController3D : CheckerWinCombinations
     [SerializeField] private GameObject[] horizontalGameOverLines;
     [SerializeField] private GameObject[] diagonalGameOverLines;
 
+    private Vector3[] verticalGameOverLinesStartPosition;
+    private Vector3[] horizontalGameOverLinesStartPosition;
+    private Vector3[] diagonalGameOverLinesStartPosition;
     private Button3D[] buttonsStatus;
     private const int GAMESYMBOL_O = 0, GAMESYMBOL_X = 1;
     private int?[] gridSymbolsStatus;
@@ -21,7 +25,9 @@ public class GameOverController3D : CheckerWinCombinations
         sizeLineGrid = (int)Mathf.Sqrt(sizeGrid);
         gridSymbolsStatus = new int?[buttons.Length];
         checkThisStepOnWin = false;
-        HideGameOverLines();
+
+        GetGameOverLinesStartPosition();
+        ResetGameOverLines();
         GetButtonsStatusArray();
     }
 
@@ -55,22 +61,52 @@ public class GameOverController3D : CheckerWinCombinations
         }
     }
 
+    private void GetGameOverLinesStartPosition()
+    {
+        verticalGameOverLinesStartPosition = new Vector3[sizeLineGrid];
+        horizontalGameOverLinesStartPosition = new Vector3[sizeLineGrid];
+        diagonalGameOverLinesStartPosition = new Vector3[sizeLineGrid];
+
+        for (int i = 0; i < verticalGameOverLines.Length; i++)
+        {
+            verticalGameOverLinesStartPosition[i] = verticalGameOverLines[i].transform.position;
+        }
+
+        for (int i = 0; i < horizontalGameOverLines.Length; i++)
+        {
+            horizontalGameOverLinesStartPosition[i] = horizontalGameOverLines[i].transform.position;
+
+        }
+
+        for (int i = 0; i < diagonalGameOverLines.Length; i++)
+        {
+            diagonalGameOverLinesStartPosition[i] = diagonalGameOverLines[i].transform.position;
+        }
+    }
+
     public void ResetGame()
     {
         GameController3D.ResetGame = true;
-        HideGameOverLines();
+        ResetGameOverLines();
     }
 
-    private void HideGameOverLines()
+    private void ResetGameOverLines()
     {
-        for (int i = 0; i < sizeLineGrid; i++)
+        for (int i = 0; i < verticalGameOverLines.Length; i++)
         {
+            verticalGameOverLines[i].transform.position = verticalGameOverLinesStartPosition[i];
             verticalGameOverLines[i].SetActive(false);
+        }
+
+        for (int i = 0; i < horizontalGameOverLines.Length; i++)
+        {
+            horizontalGameOverLines[i].transform.position = horizontalGameOverLinesStartPosition[i];
             horizontalGameOverLines[i].SetActive(false);
         }
 
         for (int i = 0; i < diagonalGameOverLines.Length; i++)
         {
+            diagonalGameOverLines[i].transform.position = diagonalGameOverLinesStartPosition[i];
             diagonalGameOverLines[i].SetActive(false);
         }
     }

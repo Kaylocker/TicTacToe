@@ -3,7 +3,7 @@ using UnityEngine;
 public class Button3D : MonoBehaviour
 {
     private static bool isMakeStep = false;
-    private static bool isGameReset;
+    private bool isGameReset = false;
     private bool isButtonActivated = false;
     private bool isWorking = true;
     private int? gameSymbol = null;
@@ -44,25 +44,17 @@ public class Button3D : MonoBehaviour
         }
     }
 
-    public bool IsGameReset 
+    private void Update()
     {
-        set
+        if (isGameReset)
         {
-            if (isGameReset)
-            {
-                return;
-            }
-            else
-            {
-                isGameReset = false;
-                isMakeStep = false;
-                isButtonActivated = false;
-                isWorking = true;
-                gameSymbol = null;
-            }
+            isGameReset = false;
+            isMakeStep = false;
+            isButtonActivated = false;
+            isWorking = true;
+            gameSymbol = null;
         }
     }
-
 
     private void OnMouseDown()
     {
@@ -96,4 +88,8 @@ public class Button3D : MonoBehaviour
         }
     }
 
+    public void ResetButton()
+    {
+        isGameReset = true;
+    }
 }
