@@ -3,7 +3,7 @@ using UnityEngine;
 public abstract class CheckerWinCombinations : MonoBehaviour
 {
     protected int COUNT_DIAGONAL_COMBINATION = 2;
-    protected int numberOfCompletedGameOverLine;
+    protected int completedGameOverLine;
 
     protected bool CheckVerticalCombinationEndGame(int?[] gridSymbolsStatus)
     {
@@ -33,6 +33,7 @@ public abstract class CheckerWinCombinations : MonoBehaviour
     {
         int sizeGrid = gridSymbolsStatus.Length;
         int sizeLineGrid = (int)Mathf.Sqrt(sizeGrid);
+
         int?[,] horizontalCombination = new int?[sizeLineGrid, sizeLineGrid];
 
         int counter = 0;
@@ -102,7 +103,7 @@ public abstract class CheckerWinCombinations : MonoBehaviour
 
             if (currentCombinationLine == 0)
             {
-                numberOfCompletedGameOverLine = i;
+                completedGameOverLine = i;
                 return true;
             }
 
@@ -115,7 +116,7 @@ public abstract class CheckerWinCombinations : MonoBehaviour
 
             if (currentCombinationLine == sizeLineGrid)
             {
-                numberOfCompletedGameOverLine = i;
+                completedGameOverLine = i;
                 return true;
             }
 

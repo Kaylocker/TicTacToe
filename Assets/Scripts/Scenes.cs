@@ -7,5 +7,6 @@ public class Scenes : MonoBehaviour
     {
         SceneManager.LoadScene(sceneNumber);
         GameController.ResetGame = true;
+        GameController3D.ResetGame = true;
     }
 }

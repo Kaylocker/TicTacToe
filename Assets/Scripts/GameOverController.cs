@@ -9,7 +9,6 @@ public class GameOverController : CheckerWinCombinations
     [SerializeField] private GameObject[] horizontalGameOverLines;
     [SerializeField] private GameObject[] diagonalGameOverLines;
 
-
     private const int GAMESYMBOL_O = 0, GAMESYMBOL_X = 1;
     private int?[] gridSymbolsStatus;
     private int sizeGrid, sizeLineGrid;
@@ -42,12 +41,6 @@ public class GameOverController : CheckerWinCombinations
         }
     }
 
-    public void ResetGame()
-    {
-        GameController.ResetGame = true;
-        HideGameOverLines();
-    }
-
     private void HideGameOverLines()
     {
         for (int i = 0; i < sizeLineGrid; i++)
@@ -62,42 +55,10 @@ public class GameOverController : CheckerWinCombinations
         }
     }
 
-    private bool CatchGameOver()
+    public void ResetGame()
     {
-        SetGameSymbolsGridContain();
-
-        bool verticalWin = CheckVerticalCombinationEndGame(gridSymbolsStatus);
-
-        if (verticalWin)
-        {
-            verticalGameOverLines[numberOfCompletedGameOverLine].SetActive(true);
-            return true;
-        }
-
-        bool horizontalWin = CheckHorizontalCombinationEndGame(gridSymbolsStatus);
-
-        if (horizontalWin)
-        {
-            horizontalGameOverLines[numberOfCompletedGameOverLine].SetActive(true);
-            return true;
-        }
-
-        bool diagonalWin = CheckDiagonalCombinationEndGame(gridSymbolsStatus);
-
-        if (diagonalWin)
-        {
-            diagonalGameOverLines[numberOfCompletedGameOverLine].SetActive(true);
-            return true;
-        }
-
-        bool standOff = CheckStandOffCombinationEndGame();
-
-        if (standOff)
-        {
-            return true;
-        }
-
-        return false;
+        GameController.ResetGame = true;
+        HideGameOverLines();
     }
 
     private void SetGameSymbolsGridContain()
@@ -106,7 +67,7 @@ public class GameOverController : CheckerWinCombinations
 
         foreach (var item in gameGridButton)
         {
-            if (item.interactable == false && GameController.GetConcreteGridButtonStatus(counter)==GAMESYMBOL_O)
+            if (item.interactable == false && GameController.GetConcreteGridButtonStatus(counter) == GAMESYMBOL_O)
             {
                 gridSymbolsStatus[counter] = GAMESYMBOL_O;
             }
@@ -122,7 +83,45 @@ public class GameOverController : CheckerWinCombinations
             counter++;
         }
     }
-    
+
+    private bool CatchGameOver()
+    {
+        SetGameSymbolsGridContain();
+
+        bool verticalWin = CheckVerticalCombinationEndGame(gridSymbolsStatus);
+
+        if (verticalWin)
+        {
+            verticalGameOverLines[completedGameOverLine].SetActive(true);
+            return true;
+        }
+
+        bool horizontalWin = CheckHorizontalCombinationEndGame(gridSymbolsStatus);
+
+        if (horizontalWin)
+        {
+            horizontalGameOverLines[completedGameOverLine].SetActive(true);
+            return true;
+        }
+
+        bool diagonalWin = CheckDiagonalCombinationEndGame(gridSymbolsStatus);
+
+        if (diagonalWin)
+        {
+            diagonalGameOverLines[completedGameOverLine].SetActive(true);
+            return true;
+        }
+
+        bool standOff = CheckStandOffCombinationEndGame();
+
+        if (standOff)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
     private bool CheckStandOffCombinationEndGame()
     {
         int counterActiveButtons = 0;

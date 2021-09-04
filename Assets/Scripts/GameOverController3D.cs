@@ -12,6 +12,7 @@ public class GameOverController3D : CheckerWinCombinations
     private Vector3[] verticalGameOverLinesStartPosition;
     private Vector3[] horizontalGameOverLinesStartPosition;
     private Vector3[] diagonalGameOverLinesStartPosition;
+
     private Button3D[] buttonsStatus;
     private const int GAMESYMBOL_O = 0, GAMESYMBOL_X = 1;
     private int?[] gridSymbolsStatus;
@@ -35,7 +36,7 @@ public class GameOverController3D : CheckerWinCombinations
     {
         isSomeOneDoStep = GameController3D.CheckEnemyTurn();
 
-        if (checkThisStepOnWin != isSomeOneDoStep)
+        if (checkThisStepOnWin != isSomeOneDoStep )
         {
             checkThisStepOnWin = isSomeOneDoStep;
 
@@ -45,6 +46,49 @@ public class GameOverController3D : CheckerWinCombinations
             {
                 GameController3D.IsCurrentGameEnded = true;
             }
+        }
+    }
+
+    private void GetGameOverLinesStartPosition()
+    {
+        verticalGameOverLinesStartPosition = new Vector3[verticalGameOverLines.Length];
+        horizontalGameOverLinesStartPosition = new Vector3[horizontalGameOverLines.Length];
+        diagonalGameOverLinesStartPosition = new Vector3[diagonalGameOverLines.Length];
+
+        for (int i = 0; i < verticalGameOverLines.Length; i++)
+        {
+            verticalGameOverLinesStartPosition[i] = verticalGameOverLines[i].transform.position;
+        }
+
+        for (int i = 0; i < horizontalGameOverLines.Length; i++)
+        {
+            horizontalGameOverLinesStartPosition[i] = horizontalGameOverLines[i].transform.position;
+        }
+
+        for (int i = 0; i < diagonalGameOverLines.Length; i++)
+        {
+            diagonalGameOverLinesStartPosition[i] = diagonalGameOverLines[i].transform.position;
+        }
+    }
+
+    private void ResetGameOverLines()
+    {
+        for (int i = 0; i < verticalGameOverLines.Length; i++)
+        {
+            verticalGameOverLines[i].SetActive(false);
+            verticalGameOverLines[i].transform.position = verticalGameOverLinesStartPosition[i];
+        }
+
+        for (int i = 0; i < horizontalGameOverLines.Length; i++)
+        {
+            horizontalGameOverLines[i].SetActive(false);
+            horizontalGameOverLines[i].transform.position = horizontalGameOverLinesStartPosition[i];
+        }
+
+        for (int i = 0; i < diagonalGameOverLines.Length; i++)
+        {
+            diagonalGameOverLines[i].SetActive(false);
+            diagonalGameOverLines[i].transform.position = diagonalGameOverLinesStartPosition[i];
         }
     }
 
@@ -61,92 +105,11 @@ public class GameOverController3D : CheckerWinCombinations
         }
     }
 
-    private void GetGameOverLinesStartPosition()
-    {
-        verticalGameOverLinesStartPosition = new Vector3[sizeLineGrid];
-        horizontalGameOverLinesStartPosition = new Vector3[sizeLineGrid];
-        diagonalGameOverLinesStartPosition = new Vector3[sizeLineGrid];
-
-        for (int i = 0; i < verticalGameOverLines.Length; i++)
-        {
-            verticalGameOverLinesStartPosition[i] = verticalGameOverLines[i].transform.position;
-        }
-
-        for (int i = 0; i < horizontalGameOverLines.Length; i++)
-        {
-            horizontalGameOverLinesStartPosition[i] = horizontalGameOverLines[i].transform.position;
-
-        }
-
-        for (int i = 0; i < diagonalGameOverLines.Length; i++)
-        {
-            diagonalGameOverLinesStartPosition[i] = diagonalGameOverLines[i].transform.position;
-        }
-    }
-
     public void ResetGame()
     {
         GameController3D.ResetGame = true;
+        checkThisStepOnWin = false;
         ResetGameOverLines();
-    }
-
-    private void ResetGameOverLines()
-    {
-        for (int i = 0; i < verticalGameOverLines.Length; i++)
-        {
-            verticalGameOverLines[i].transform.position = verticalGameOverLinesStartPosition[i];
-            verticalGameOverLines[i].SetActive(false);
-        }
-
-        for (int i = 0; i < horizontalGameOverLines.Length; i++)
-        {
-            horizontalGameOverLines[i].transform.position = horizontalGameOverLinesStartPosition[i];
-            horizontalGameOverLines[i].SetActive(false);
-        }
-
-        for (int i = 0; i < diagonalGameOverLines.Length; i++)
-        {
-            diagonalGameOverLines[i].transform.position = diagonalGameOverLinesStartPosition[i];
-            diagonalGameOverLines[i].SetActive(false);
-        }
-    }
-
-    private bool CatchGameOver()
-    {
-        SetGameSymbolsGridContain();
-
-        bool verticalWin = CheckVerticalCombinationEndGame(gridSymbolsStatus);
-
-        if (verticalWin)
-        {
-            verticalGameOverLines[numberOfCompletedGameOverLine].SetActive(true);
-            return true;
-        }
-
-        bool horizontalWin = CheckHorizontalCombinationEndGame(gridSymbolsStatus);
-
-        if (horizontalWin)
-        {
-            horizontalGameOverLines[numberOfCompletedGameOverLine].SetActive(true);
-            return true;
-        }
-
-        bool diagonalWin = CheckDiagonalCombinationEndGame(gridSymbolsStatus);
-
-        if (diagonalWin)
-        {
-            diagonalGameOverLines[numberOfCompletedGameOverLine].SetActive(true);
-            return true;
-        }
-
-        bool standOff = CheckStandOffCombinationEndGame();
-
-        if (standOff)
-        {
-            return true;
-        }
-
-        return false;
     }
 
     private void SetGameSymbolsGridContain()
@@ -170,6 +133,44 @@ public class GameOverController3D : CheckerWinCombinations
 
             counter++;
         }
+    }
+
+    private bool CatchGameOver()
+    {
+        SetGameSymbolsGridContain();
+
+        bool verticalWin = CheckVerticalCombinationEndGame(gridSymbolsStatus);
+
+        if (verticalWin)
+        {
+            verticalGameOverLines[completedGameOverLine].SetActive(true);
+            return true;
+        }
+
+        bool horizontalWin = CheckHorizontalCombinationEndGame(gridSymbolsStatus);
+
+        if (horizontalWin)
+        {
+            horizontalGameOverLines[completedGameOverLine].SetActive(true);
+            return true;
+        }
+
+        bool diagonalWin = CheckDiagonalCombinationEndGame(gridSymbolsStatus);
+
+        if (diagonalWin)
+        {
+            diagonalGameOverLines[completedGameOverLine].SetActive(true);
+            return true;
+        }
+
+        bool standOff = CheckStandOffCombinationEndGame();
+
+        if (standOff)
+        {
+            return true;
+        }
+
+        return false;
     }
 
     private bool CheckStandOffCombinationEndGame()

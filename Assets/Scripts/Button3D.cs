@@ -75,7 +75,7 @@ public class Button3D : MonoBehaviour
         return isMakeStep;
     }
 
-    public static void SetStepMaked()
+    public static void SetStep()
     {
         isMakeStep = false;
     }
