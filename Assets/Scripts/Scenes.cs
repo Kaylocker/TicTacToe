@@ -6,7 +6,6 @@ public class Scenes : MonoBehaviour
 {
     private const int gameMode2D = 0, gameMode3D = 1, countGameModes = 4;
     private int currentGameMode;
-    
 
     private void Start()
     {
@@ -22,6 +21,7 @@ public class Scenes : MonoBehaviour
         else
         {
             GameController3D.ResetGame = true;
+
             if (sceneNumber == 0)
             {
                 SceneManager.LoadScene(sceneNumber);
