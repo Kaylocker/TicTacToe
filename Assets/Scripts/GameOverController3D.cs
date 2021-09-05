@@ -38,6 +38,11 @@ public class GameOverController3D : CheckerWinCombinations
 
         if (checkThisStepOnWin != isSomeOneDoStep )
         {
+            if (GameController3D.ActiveSymbols.Count == 0)
+            {
+                return;
+            }
+
             checkThisStepOnWin = isSomeOneDoStep;
 
             bool isGameOver = CatchGameOver();
@@ -108,7 +113,6 @@ public class GameOverController3D : CheckerWinCombinations
     public void ResetGame()
     {
         GameController3D.ResetGame = true;
-        checkThisStepOnWin = false;
         ResetGameOverLines();
     }
 
