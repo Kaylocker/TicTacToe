@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 public class Scenes : MonoBehaviour
 {
     private const int gameMode2D = 0, gameMode3D = 1, countGameModes = 4;
-    private int currentGameMode;
+    private static int currentGameMode;
 
     private void Start()
     {
@@ -13,15 +13,14 @@ public class Scenes : MonoBehaviour
     }
     public void LoadScene(int sceneNumber)
     {
+        GameController.ResetGame = true;
+
         if (currentGameMode == gameMode2D)
         {
-            GameController.ResetGame = true;
             SceneManager.LoadScene(sceneNumber);
         }
         else
         {
-            GameController3D.ResetGame = true;
-
             if (sceneNumber == 0)
             {
                 SceneManager.LoadScene(sceneNumber);
@@ -47,5 +46,10 @@ public class Scenes : MonoBehaviour
             currentGameMode = gameMode2D;
             buttonText.text = "2D";
         }
+    }
+
+    public static int GetCurrentGameMode()
+    {
+        return currentGameMode;
     }
 }

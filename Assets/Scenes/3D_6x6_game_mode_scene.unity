@@ -2423,7 +2423,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1572455793}
-        m_TargetAssemblyTypeName: GameController3D, Assembly-CSharp
+        m_TargetAssemblyTypeName: GameController, Assembly-CSharp
         m_MethodName: ChangeCurrentGameSymbol
         m_Mode: 1
         m_Arguments:
@@ -4777,7 +4777,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1783445298}
-        m_TargetAssemblyTypeName: GameOverController3D, Assembly-CSharp
+        m_TargetAssemblyTypeName: GameOverController, Assembly-CSharp
         m_MethodName: ResetGame
         m_Mode: 1
         m_Arguments:
@@ -5448,9 +5448,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1548379929}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 001112e3fe2491247aba08f4f15ea696, type: 3}
+  m_Script: {fileID: 11500000, guid: a547a706dd180c0499b0148298aa9312, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameGridButton: []
+  gameIcon: []
   buttons:
   - {fileID: 1146812510}
   - {fileID: 546799100}
@@ -5582,7 +5584,7 @@ GameObject:
   - component: {fileID: 1572455794}
   - component: {fileID: 1572455793}
   m_Layer: 0
-  m_Name: GameController3D
+  m_Name: GameController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5597,9 +5599,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1572455792}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 458ec97a61ad73646b88af2f49e91b0d, type: 3}
+  m_Script: {fileID: 11500000, guid: ef993df10ca5be949b70e18a863186e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameIcon: []
+  gameGridButtons: []
+  currentGameSymbolIcon: []
   buttons:
   - {fileID: 1146812510}
   - {fileID: 546799100}
@@ -5948,7 +5953,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1572455793}
-        m_TargetAssemblyTypeName: GameController3D, Assembly-CSharp
+        m_TargetAssemblyTypeName: GameController, Assembly-CSharp
         m_MethodName: Quit
         m_Mode: 1
         m_Arguments:
@@ -6487,7 +6492,7 @@ GameObject:
   - component: {fileID: 1783445299}
   - component: {fileID: 1783445298}
   m_Layer: 0
-  m_Name: GameOverController3D
+  m_Name: GameOverController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6502,9 +6507,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1783445297}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b46adeb941035434cbb4db5e870332ff, type: 3}
+  m_Script: {fileID: 11500000, guid: 9c47dfbde5878924bad8e8b3da178c44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameGridButton: []
+  gameIcon: []
   buttons:
   - {fileID: 1146812510}
   - {fileID: 546799100}

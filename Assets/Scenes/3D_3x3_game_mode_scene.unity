@@ -647,7 +647,7 @@ GameObject:
   - component: {fileID: 379045009}
   - component: {fileID: 379045008}
   m_Layer: 0
-  m_Name: GameOverController3D
+  m_Name: GameOverController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -662,9 +662,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 379045007}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b46adeb941035434cbb4db5e870332ff, type: 3}
+  m_Script: {fileID: 11500000, guid: 9c47dfbde5878924bad8e8b3da178c44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameGridButton: []
+  gameIcon: []
   buttons:
   - {fileID: 1164567807}
   - {fileID: 827437617}
@@ -912,7 +914,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 379045008}
-        m_TargetAssemblyTypeName: GameOverController3D, Assembly-CSharp
+        m_TargetAssemblyTypeName: GameOverController, Assembly-CSharp
         m_MethodName: ResetGame
         m_Mode: 1
         m_Arguments:
@@ -967,7 +969,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh181560
+  m_Name: pb_Mesh23194
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -1602,9 +1604,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 952919172}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 001112e3fe2491247aba08f4f15ea696, type: 3}
+  m_Script: {fileID: 11500000, guid: a547a706dd180c0499b0148298aa9312, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameGridButton: []
+  gameIcon: []
   buttons:
   - {fileID: 1164567807}
   - {fileID: 827437617}
@@ -1973,7 +1977,7 @@ GameObject:
   - component: {fileID: 1186781142}
   - component: {fileID: 1186781141}
   m_Layer: 0
-  m_Name: GameController3D
+  m_Name: GameController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1988,9 +1992,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1186781140}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 458ec97a61ad73646b88af2f49e91b0d, type: 3}
+  m_Script: {fileID: 11500000, guid: ef993df10ca5be949b70e18a863186e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameIcon: []
+  gameGridButtons: []
+  currentGameSymbolIcon: []
   buttons:
   - {fileID: 1164567807}
   - {fileID: 827437617}
@@ -2422,7 +2429,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1186781141}
-        m_TargetAssemblyTypeName: GameController3D, Assembly-CSharp
+        m_TargetAssemblyTypeName: GameController, Assembly-CSharp
         m_MethodName: ChangeCurrentGameSymbol
         m_Mode: 1
         m_Arguments:
@@ -2817,7 +2824,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1186781141}
-        m_TargetAssemblyTypeName: GameController3D, Assembly-CSharp
+        m_TargetAssemblyTypeName: GameController, Assembly-CSharp
         m_MethodName: Quit
         m_Mode: 1
         m_Arguments:

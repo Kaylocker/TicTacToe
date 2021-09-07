@@ -1,20 +1,33 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class GameController : MonoBehaviour
 {
+    [Header("2D MODE")]
     [SerializeField] private Sprite[] gameIcon;
     [SerializeField] private Button[] gameGridButtons;
-    [SerializeField] private Button changerPlayerSymbol;
     [SerializeField] private GameObject[] currentGameSymbolIcon;
+
+    [Header("3D MODE")]
+    [SerializeField] private GameObject[] buttons;
+    [SerializeField] private GameObject[] gameSymbols;
+    [SerializeField] private GameObject[] currentGameSymbols;
+
+    [SerializeField] private Button changerPlayerSymbol;
+
+    private Button3D[] buttonsStatus;
+    private static List<GameObject> activeSymbols;
 
     private static bool isEnemyTurn;
     private static bool isGameActive;
     private static bool isCurrentGameEnded = false;
     private static int currentSymbol = GAMESYMBOL_O;
     private static int?[] gameGridButtonsStatus;
-    private const int GAMESYMBOL_O = 0, GAMESYMBOL_X = 1;
+    private const int GAMESYMBOL_O = 0, GAMESYMBOL_X = 1, gameMode2D = 0, gameMode3D = 1;
+    private int currentGameMode;
 
+    public static List<GameObject> ActiveSymbols { get => activeSymbols; }
     public static bool IsGameActive { get => isGameActive; set => isGameActive = value; }
     public static bool IsCurrentGameEnded
     {
@@ -32,6 +45,11 @@ public class GameController : MonoBehaviour
     }
     public static bool ResetGame { get; set; }
 
+    private void Awake()
+    {
+        currentGameMode = Scenes.GetCurrentGameMode();
+    }
+
     private void Start()
     {
         SetStartSettings();
@@ -43,9 +61,25 @@ public class GameController : MonoBehaviour
         if (ResetGame)
         {
             ResetGame = false;
-            SetStartSettings();
             changerPlayerSymbol.interactable = true;
             isCurrentGameEnded = false;
+
+            if (currentGameMode == gameMode3D)
+            {
+                DestroyGameSymbols();
+                ResetButtonsProperties();
+            }
+
+            SetStartSettings();
+        }
+
+        if (Button3D.CheckStep() == true && !isEnemyTurn)
+        {
+            isGameActive = true;
+            isEnemyTurn = true;
+            changerPlayerSymbol.interactable = false;
+
+            ButtonAction3D();
         }
     }
 
@@ -53,13 +87,36 @@ public class GameController : MonoBehaviour
     {
         isGameActive = false;
         isEnemyTurn = false;
-        gameGridButtonsStatus = new int?[gameGridButtons.Length];
 
-        for (int i = 0; i < gameGridButtons.Length; i++)
+        if (currentGameMode == gameMode2D)
         {
-            gameGridButtons[i].interactable = true;
-            gameGridButtons[i].image.sprite = null;
-            gameGridButtonsStatus[i] = null;
+            gameGridButtonsStatus = new int?[gameGridButtons.Length];
+
+            for (int i = 0; i < gameGridButtons.Length; i++)
+            {
+                gameGridButtons[i].interactable = true;
+                gameGridButtons[i].image.sprite = null;
+                gameGridButtonsStatus[i] = null;
+            }
+        }
+        else
+        {
+            activeSymbols = new List<GameObject>();
+            GetButtonsStatusArray();
+        }
+
+    }
+
+    private void GetButtonsStatusArray()
+    {
+        buttonsStatus = new Button3D[buttons.Length];
+
+        int counter = 0;
+
+        foreach (var item in buttons)
+        {
+            buttonsStatus[counter] = item.GetComponent<Button3D>();
+            counter++;
         }
     }
 
@@ -81,6 +138,28 @@ public class GameController : MonoBehaviour
         isEnemyTurn = true;
     }
 
+    public void ButtonAction3D()
+    {
+        int counter = 0;
+
+        foreach (var item in buttonsStatus)
+        {
+            if (buttonsStatus[counter].IsButtonActivated && buttonsStatus[counter].IsWorking)
+            {
+                Vector3 symbolPos = buttons[counter].transform.position;
+                symbolPos += Vector3.up;
+                GameObject gameSymbol = Instantiate(gameSymbols[currentSymbol], symbolPos, Quaternion.identity);
+                Button3D.SetStep();
+                activeSymbols.Add(gameSymbol);
+
+                buttonsStatus[counter].GameSymbol = currentSymbol;
+                buttonsStatus[counter].ButtonOff();
+            }
+
+            counter++;
+        }
+    }
+
     public void ChangeCurrentGameSymbol()
     {
         if (isGameActive)
@@ -90,14 +169,32 @@ public class GameController : MonoBehaviour
 
         if (currentSymbol == GAMESYMBOL_O)
         {
-            currentGameSymbolIcon[GAMESYMBOL_O].SetActive(false);
-            currentGameSymbolIcon[GAMESYMBOL_X].SetActive(true);
+            if (currentGameMode == gameMode2D)
+            {
+                currentGameSymbolIcon[GAMESYMBOL_O].SetActive(false);
+                currentGameSymbolIcon[GAMESYMBOL_X].SetActive(true);
+            }
+            else
+            {
+                currentGameSymbols[GAMESYMBOL_O].SetActive(false);
+                currentGameSymbols[GAMESYMBOL_X].SetActive(true);
+            }
+
             currentSymbol = GAMESYMBOL_X;
         }
         else
         {
-            currentGameSymbolIcon[GAMESYMBOL_X].SetActive(false);
-            currentGameSymbolIcon[GAMESYMBOL_O].SetActive(true);
+            if (currentGameMode == gameMode2D)
+            {
+                currentGameSymbolIcon[GAMESYMBOL_X].SetActive(false);
+                currentGameSymbolIcon[GAMESYMBOL_O].SetActive(true);
+            }
+            else
+            {
+                currentGameSymbols[GAMESYMBOL_X].SetActive(false);
+                currentGameSymbols[GAMESYMBOL_O].SetActive(true);
+            }
+
             currentSymbol = GAMESYMBOL_O;
         }
     }
@@ -106,13 +203,30 @@ public class GameController : MonoBehaviour
     {
         if (currentSymbol == GAMESYMBOL_O)
         {
-            currentGameSymbolIcon[GAMESYMBOL_O].SetActive(true);
-            currentGameSymbolIcon[GAMESYMBOL_X].SetActive(false);
+            if (currentGameMode == gameMode2D)
+            {
+                currentGameSymbolIcon[GAMESYMBOL_O].SetActive(true);
+                currentGameSymbolIcon[GAMESYMBOL_X].SetActive(false);
+            }
+            else
+            {
+                currentGameSymbols[GAMESYMBOL_O].SetActive(true);
+                currentGameSymbols[GAMESYMBOL_X].SetActive(false);
+            }
         }
         else
         {
-            currentGameSymbolIcon[GAMESYMBOL_O].SetActive(false);
-            currentGameSymbolIcon[GAMESYMBOL_X].SetActive(true);
+            if (currentGameMode == gameMode2D)
+            {
+                currentGameSymbolIcon[GAMESYMBOL_O].SetActive(false);
+                currentGameSymbolIcon[GAMESYMBOL_X].SetActive(true);
+            }
+            else
+            {
+                currentGameSymbols[GAMESYMBOL_O].SetActive(false);
+                currentGameSymbols[GAMESYMBOL_X].SetActive(true);
+            }
+               
         }
     }
 
@@ -142,6 +256,27 @@ public class GameController : MonoBehaviour
     public static int? GetConcreteGridButtonStatus(int numberButton)
     {
         return gameGridButtonsStatus[numberButton];
+    }
+
+    public static void AddGameSymbol(GameObject gameSymbol)
+    {
+        activeSymbols.Add(gameSymbol);
+    }
+
+    private void ResetButtonsProperties()
+    {
+        foreach (var item in buttonsStatus)
+        {
+            item.ResetButton();
+        }
+    }
+
+    private void DestroyGameSymbols()
+    {
+        foreach (var item in activeSymbols)
+        {
+            Destroy(item);
+        }
     }
 
     public void Quit()

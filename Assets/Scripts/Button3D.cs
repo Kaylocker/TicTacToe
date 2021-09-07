@@ -58,13 +58,14 @@ public class Button3D : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (GameController3D.CheckEnemyTurn() == true || GameController3D.IsCurrentGameEnded)
+        if (GameController.CheckEnemyTurn() == true || GameController.IsCurrentGameEnded)
         {
             return;
         }
 
         if (Input.GetMouseButtonDown(0) && !isButtonActivated)
         {
+            print("clicked");
             isButtonActivated = true;
             isMakeStep = true;
         }
