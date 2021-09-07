@@ -12,6 +12,8 @@ public class GameOverController : CheckerWinCombinations
     [SerializeField] private GameObject[] gameSymbols;
 
     [Header("COMMON")]
+    [SerializeField] private GameController gameController;
+    [SerializeField] private Enemy enemy;
     [SerializeField] private GameObject[] verticalGameOverLines;
     [SerializeField] private GameObject[] horizontalGameOverLines;
     [SerializeField] private GameObject[] diagonalGameOverLines;
@@ -31,7 +33,7 @@ public class GameOverController : CheckerWinCombinations
 
     private void Awake()
     {
-        currentGameMode = Scenes.GetCurrentGameMode();
+        currentGameMode = Scenes.CurrentGameMode;
     }
 
     private void Start()
@@ -41,13 +43,13 @@ public class GameOverController : CheckerWinCombinations
 
     private void Update()
     {
-        isSomeOneDoStep = GameController.CheckEnemyTurn();
+        isSomeOneDoStep = enemy.EnemyTurn;
 
         if (checkThisStepOnWin != isSomeOneDoStep)
         {
             if (currentGameMode == gameMode3D)
             {
-                if (GameController.ActiveSymbols.Count == 0)
+                if (gameController.ActiveSymbols.Count==0)
                 {
                     return;
                 }
@@ -59,7 +61,7 @@ public class GameOverController : CheckerWinCombinations
 
             if (isGameOver)
             {
-                GameController.IsCurrentGameEnded = true;
+                gameController.IsCurrentGameEnded = true;
             }
         }
     }
@@ -74,7 +76,6 @@ public class GameOverController : CheckerWinCombinations
             sizeLineGrid = (int)Mathf.Sqrt(sizeGrid);
             gridSymbolsStatus = new int?[gameGridButton.Length];
             ResetGameOverLines2D();
-
         }
         else
         {
@@ -111,7 +112,7 @@ public class GameOverController : CheckerWinCombinations
 
     public void ResetGame()
     {
-        GameController.ResetGame = true;
+        gameController.ResetGame = true;
 
         if (currentGameMode == gameMode2D)
         {
@@ -177,11 +178,11 @@ public class GameOverController : CheckerWinCombinations
 
         foreach (var item in gameGridButton)
         {
-            if (item.interactable == false && GameController.GetConcreteGridButtonStatus(counter) == GAMESYMBOL_O)
+            if (item.interactable == false && gameController.GetConcreteGridButtonStatus(counter) == GAMESYMBOL_O)
             {
                 gridSymbolsStatus[counter] = GAMESYMBOL_O;
             }
-            else if (item.interactable == false && GameController.GetConcreteGridButtonStatus(counter) == GAMESYMBOL_X)
+            else if (item.interactable == false && gameController.GetConcreteGridButtonStatus(counter) == GAMESYMBOL_X)
             {
                 gridSymbolsStatus[counter] = GAMESYMBOL_X;
             }

@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class Button3D : MonoBehaviour
 {
+    [SerializeField] private Enemy enemy;
+
     private static bool isMakeStep = false;
     private bool isGameReset = false;
     private bool isButtonActivated = false;
@@ -58,7 +60,7 @@ public class Button3D : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (GameController.CheckEnemyTurn() == true || GameController.IsCurrentGameEnded)
+        if (enemy.EnemyTurn == true || isGameReset)
         {
             return;
         }
@@ -75,7 +77,7 @@ public class Button3D : MonoBehaviour
         return isMakeStep;
     }
 
-    public static void SetStep()
+    public static void SetStepIsMaked()
     {
         isMakeStep = false;
     }

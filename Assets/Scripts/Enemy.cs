@@ -12,20 +12,25 @@ public class Enemy : MonoBehaviour
     [SerializeField] private GameObject[] buttons;
     [SerializeField] private GameObject[] gameSymbols;
 
-    private List<Button> currentActiveButtonsIcons;
+    [Header("COMMON")]
+    [SerializeField] private GameController gameController;
 
+    private List<Button> currentActiveButtonsIcons2D;
     private Button3D[] buttonsStatus;
-    private List<GameObject> currentActiveButtons;
+    private List<GameObject> currentActiveButtons3D;
+    private GameObject lastGameSymbol;
     private List<int> concreteNumbersGridButtons;
 
     private bool myTurn = false;
     private int currentSymbol;
     private int currentMode;
     private const int GAMESYMBOL_O = 0, GAMESYMBOL_X = 1, gameMode2D = 0, gameMode3D = 1;
+    public GameObject LastGameSymbol { get => lastGameSymbol; }
+    public bool EnemyTurn { get=> myTurn; set=> myTurn=value; }
 
     private void Awake()
     {
-        currentMode = Scenes.GetCurrentGameMode();
+        currentMode = Scenes.CurrentGameMode;
     }
 
     private void Start()
@@ -38,31 +43,29 @@ public class Enemy : MonoBehaviour
 
     private void Update()
     {
-        myTurn = GameController.CheckEnemyTurn();
-
-        if (myTurn == false || GameController.IsCurrentGameEnded)
+        if (myTurn == false || gameController.IsCurrentGameEnded)
         {
             return;
         }
 
         if (currentMode == gameMode2D)
         {
-            currentActiveButtonsIcons = new List<Button>();
+            currentActiveButtonsIcons2D = new List<Button>();
         }
         else
         {
-            currentActiveButtons = new List<GameObject>();
+            currentActiveButtons3D = new List<GameObject>();
         }
 
         concreteNumbersGridButtons = new List<int>();
-        GameController.SetEnemyTurn(false);
+        myTurn = false;
 
         SetCurrentSymbol();
     }
 
     private void SetCurrentSymbol()
     {
-        int playerSymbol = GameController.GetCurrentPlayerSymbol();
+        int playerSymbol = gameController.GetCurrentPlayerSymbol();
 
         if (playerSymbol == GAMESYMBOL_O)
         {
@@ -99,7 +102,7 @@ public class Enemy : MonoBehaviour
             {
                 if (gameGridButton[counter].interactable)
                 {
-                    currentActiveButtonsIcons.Add(item);
+                    currentActiveButtonsIcons2D.Add(item);
                     concreteNumbersGridButtons.Add(counter);
                 }
 
@@ -112,7 +115,7 @@ public class Enemy : MonoBehaviour
             {
                 if (buttonsStatus[counter].IsWorking)
                 {
-                    currentActiveButtons.Add(buttons[counter]);
+                    currentActiveButtons3D.Add(buttons[counter]);
                     concreteNumbersGridButtons.Add(counter);
                 }
 
@@ -135,15 +138,35 @@ public class Enemy : MonoBehaviour
         }
 
         concreteNumbersGridButtons = null;
-        currentActiveButtonsIcons = null;
+        currentActiveButtonsIcons2D = null;
+    }
+
+    private void MakeStep2DMode()
+    {
+        int random = Random.Range(0, currentActiveButtonsIcons2D.Count);
+        int counter = 0;
+
+        foreach (var item in currentActiveButtonsIcons2D)
+        {
+            if (counter == random)
+            {
+                int concreteNumber = concreteNumbersGridButtons[counter];
+
+                gameController.SetEnemyButtonStatus(concreteNumber, currentSymbol);
+                item.image.sprite = gameIcon[currentSymbol];
+                item.interactable = false;
+            }
+
+            counter++;
+        }
     }
 
     private void MakeStep3DMode()
     {
-        int random = Random.Range(0, currentActiveButtons.Count);
+        int random = Random.Range(0, currentActiveButtons3D.Count);
         int counter = 0;
 
-        foreach (var item in currentActiveButtons)
+        foreach (var item in currentActiveButtons3D)
         {
             if (counter == random)
             {
@@ -153,32 +176,12 @@ public class Enemy : MonoBehaviour
                 symbolPos += Vector3.up;
                 GameObject gameSymbol = Instantiate(gameSymbols[currentSymbol], symbolPos, Quaternion.identity);
 
-                GameController.AddGameSymbol(gameSymbol);
+                lastGameSymbol = gameSymbol;
 
                 buttonsStatus[concreteNumber].GameSymbol = currentSymbol;
                 buttonsStatus[concreteNumber].ButtonOff();
 
-                Button3D.SetStep();
-            }
-
-            counter++;
-        }
-    }
-
-    private void MakeStep2DMode()
-    {
-        int random = Random.Range(0, currentActiveButtonsIcons.Count);
-        int counter = 0;
-
-        foreach (var item in currentActiveButtonsIcons)
-        {
-            if (counter == random)
-            {
-                int concreteNumber = concreteNumbersGridButtons[counter];
-
-                GameController.SetEnemyButtonStatus(concreteNumber, currentSymbol);
-                item.image.sprite = gameIcon[currentSymbol];
-                item.interactable = false;
+                Button3D.SetStepIsMaked();
             }
 
             counter++;

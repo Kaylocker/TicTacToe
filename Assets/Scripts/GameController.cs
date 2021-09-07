@@ -14,40 +14,29 @@ public class GameController : MonoBehaviour
     [SerializeField] private GameObject[] gameSymbols;
     [SerializeField] private GameObject[] currentGameSymbols;
 
+    [Header("COMMON")]
+    [SerializeField] GameOverController gameOverController;
+    [SerializeField] Enemy enemy;
     [SerializeField] private Button changerPlayerSymbol;
 
     private Button3D[] buttonsStatus;
-    private static List<GameObject> activeSymbols;
+    private List<GameObject> activeSymbols;
 
-    private static bool isEnemyTurn;
-    private static bool isGameActive;
-    private static bool isCurrentGameEnded = false;
-    private static int currentSymbol = GAMESYMBOL_O;
-    private static int?[] gameGridButtonsStatus;
-    private const int GAMESYMBOL_O = 0, GAMESYMBOL_X = 1, gameMode2D = 0, gameMode3D = 1;
+    private bool isGameActive;
+    private bool isCurrentGameEnded = false;
+    private int currentSymbol = GAMESYMBOL_O;
     private int currentGameMode;
+    private int?[] gameGridButtonsStatus;
+    private const int GAMESYMBOL_O = 0, GAMESYMBOL_X = 1, gameMode2D = 0, gameMode3D = 1;
 
-    public static List<GameObject> ActiveSymbols { get => activeSymbols; }
-    public static bool IsGameActive { get => isGameActive; set => isGameActive = value; }
-    public static bool IsCurrentGameEnded
-    {
-        get => isCurrentGameEnded;
-
-        set
-        {
-            isCurrentGameEnded = value;
-
-            if (isCurrentGameEnded)
-            {
-                isGameActive = false;
-            }
-        }
-    }
-    public static bool ResetGame { get; set; }
+    public List<GameObject> ActiveSymbols { get => activeSymbols; }
+    public bool IsGameActive { get => isGameActive; private set => isGameActive = value; }
+    public bool IsCurrentGameEnded { get => isCurrentGameEnded; set => isCurrentGameEnded = value; }
+    public bool ResetGame { get; set; }
 
     private void Awake()
     {
-        currentGameMode = Scenes.GetCurrentGameMode();
+        currentGameMode = Scenes.CurrentGameMode;
     }
 
     private void Start()
@@ -73,10 +62,12 @@ public class GameController : MonoBehaviour
             SetStartSettings();
         }
 
-        if (Button3D.CheckStep() == true && !isEnemyTurn)
+        if (Button3D.CheckStep() == true && !enemy.EnemyTurn && !isCurrentGameEnded)
         {
+            AddEnemyPrefabGameSymbol();
             isGameActive = true;
-            isEnemyTurn = true;
+            enemy.EnemyTurn = true;
+
             changerPlayerSymbol.interactable = false;
 
             ButtonAction3D();
@@ -86,7 +77,7 @@ public class GameController : MonoBehaviour
     private void SetStartSettings()
     {
         isGameActive = false;
-        isEnemyTurn = false;
+        enemy.EnemyTurn = false;
 
         if (currentGameMode == gameMode2D)
         {
@@ -124,7 +115,7 @@ public class GameController : MonoBehaviour
     {
         isGameActive = true;
 
-        if (isEnemyTurn || isCurrentGameEnded)
+        if (enemy.EnemyTurn || isCurrentGameEnded)
         {
             return;
         }
@@ -135,11 +126,13 @@ public class GameController : MonoBehaviour
         gameGridButtonsStatus[numberGridButton] = currentSymbol;
         gameGridButtons[numberGridButton].interactable = false;
 
-        isEnemyTurn = true;
+        enemy.EnemyTurn = true;
     }
 
-    public void ButtonAction3D()
+    private void ButtonAction3D()
     {
+        AddEnemyPrefabGameSymbol();
+
         int counter = 0;
 
         foreach (var item in buttonsStatus)
@@ -149,7 +142,7 @@ public class GameController : MonoBehaviour
                 Vector3 symbolPos = buttons[counter].transform.position;
                 symbolPos += Vector3.up;
                 GameObject gameSymbol = Instantiate(gameSymbols[currentSymbol], symbolPos, Quaternion.identity);
-                Button3D.SetStep();
+                Button3D.SetStepIsMaked();
                 activeSymbols.Add(gameSymbol);
 
                 buttonsStatus[counter].GameSymbol = currentSymbol;
@@ -226,26 +219,16 @@ public class GameController : MonoBehaviour
                 currentGameSymbols[GAMESYMBOL_O].SetActive(false);
                 currentGameSymbols[GAMESYMBOL_X].SetActive(true);
             }
-               
+
         }
     }
 
-    public static bool CheckEnemyTurn()
-    {
-        return isEnemyTurn;
-    }
-
-    public static void SetEnemyTurn(bool turn)
-    {
-        isEnemyTurn = turn;
-    }
-
-    public static int GetCurrentPlayerSymbol()
+    public int GetCurrentPlayerSymbol()
     {
         return currentSymbol;
     }
 
-    public static void SetEnemyButtonStatus(int numberButton, int symbolNumber)
+    public  void SetEnemyButtonStatus(int numberButton, int symbolNumber)
     {
         if (gameGridButtonsStatus[numberButton] == null)
         {
@@ -253,14 +236,17 @@ public class GameController : MonoBehaviour
         }
     }
 
-    public static int? GetConcreteGridButtonStatus(int numberButton)
+    public int? GetConcreteGridButtonStatus(int numberButton)
     {
         return gameGridButtonsStatus[numberButton];
     }
 
-    public static void AddGameSymbol(GameObject gameSymbol)
+    private void AddEnemyPrefabGameSymbol()
     {
-        activeSymbols.Add(gameSymbol);
+        if (enemy.LastGameSymbol != null)
+        {
+            activeSymbols.Add(enemy.LastGameSymbol);
+        }
     }
 
     private void ResetButtonsProperties()

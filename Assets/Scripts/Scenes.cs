@@ -6,15 +6,10 @@ public class Scenes : MonoBehaviour
 {
     private const int gameMode2D = 0, gameMode3D = 1, countGameModes = 4;
     private static int currentGameMode;
+    public static int CurrentGameMode { get => currentGameMode; }
 
-    private void Start()
-    {
-        currentGameMode = gameMode2D;
-    }
     public void LoadScene(int sceneNumber)
     {
-        GameController.ResetGame = true;
-
         if (currentGameMode == gameMode2D)
         {
             SceneManager.LoadScene(sceneNumber);
@@ -48,8 +43,4 @@ public class Scenes : MonoBehaviour
         }
     }
 
-    public static int GetCurrentGameMode()
-    {
-        return currentGameMode;
-    }
 }

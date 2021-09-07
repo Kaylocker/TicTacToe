@@ -1959,6 +1959,10 @@ MonoBehaviour:
   gameIcon:
   - {fileID: 21300000, guid: 6910296d60e1d614c9fe8e1dc7aadf25, type: 3}
   - {fileID: 21300000, guid: a06b921cc75a1924da0631562e239779, type: 3}
+  buttons: []
+  gameSymbols: []
+  gameController: {fileID: 1067398926}
+  enemy: {fileID: 1779291460}
   verticalGameOverLines:
   - {fileID: 786885625}
   - {fileID: 1535052964}
@@ -4297,10 +4301,15 @@ MonoBehaviour:
   - {fileID: 420343714}
   - {fileID: 272327414}
   - {fileID: 60071604}
-  changerPlayerSymbol: {fileID: 1091091020}
   currentGameSymbolIcon:
   - {fileID: 1971921514}
   - {fileID: 151837409}
+  buttons: []
+  gameSymbols: []
+  currentGameSymbols: []
+  gameOverController: {fileID: 439881606}
+  enemy: {fileID: 1779291460}
+  changerPlayerSymbol: {fileID: 1091091020}
 --- !u!4 &1067398927
 Transform:
   m_ObjectHideFlags: 0
@@ -6613,6 +6622,9 @@ MonoBehaviour:
   gameIcon:
   - {fileID: 21300000, guid: 6910296d60e1d614c9fe8e1dc7aadf25, type: 3}
   - {fileID: 21300000, guid: a06b921cc75a1924da0631562e239779, type: 3}
+  buttons: []
+  gameSymbols: []
+  gameController: {fileID: 1067398926}
 --- !u!4 &1779291461
 Transform:
   m_ObjectHideFlags: 0
