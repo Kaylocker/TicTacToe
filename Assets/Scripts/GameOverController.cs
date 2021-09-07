@@ -5,6 +5,10 @@ public class GameOverController : CheckerWinCombinations
 {
     [SerializeField] private Button[] gameGridButton;
     [SerializeField] private Sprite[] gameIcon;
+
+    [SerializeField] private GameObject[] buttons;
+    [SerializeField] private GameObject[] gameSymbols;
+
     [SerializeField] private GameObject[] verticalGameOverLines;
     [SerializeField] private GameObject[] horizontalGameOverLines;
     [SerializeField] private GameObject[] diagonalGameOverLines;
