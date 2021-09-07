@@ -65,7 +65,6 @@ public class Button3D : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0) && !isButtonActivated)
         {
-            print("clicked");
             isButtonActivated = true;
             isMakeStep = true;
         }

@@ -66,45 +66,24 @@ public class GameOverController : CheckerWinCombinations
 
     private void StartSettings()
     {
+        checkThisStepOnWin = false;
+
         if (currentGameMode == gameMode2D)
         {
             sizeGrid = gameGridButton.Length;
+            sizeLineGrid = (int)Mathf.Sqrt(sizeGrid);
+            gridSymbolsStatus = new int?[gameGridButton.Length];
+            ResetGameOverLines2D();
 
         }
         else
         {
             sizeGrid = buttons.Length;
-        }
-
-        sizeLineGrid = (int)Mathf.Sqrt(sizeGrid);
-        checkThisStepOnWin = false;
-
-        if (currentGameMode == gameMode2D)
-        {
-            gridSymbolsStatus = new int?[gameGridButton.Length];
-            HideGameOverLines();
-        }
-        else
-        {
+            sizeLineGrid = (int)Mathf.Sqrt(sizeGrid);
             gridSymbolsStatus = new int?[buttons.Length];
-
             GetGameOverLinesStartPosition();
-            ResetGameOverLines();
+            ResetGameOverLines3D();
             GetButtonsStatusArray();
-        }
-    }
-
-    private void HideGameOverLines()
-    {
-        for (int i = 0; i < sizeLineGrid; i++)
-        {
-            verticalGameOverLines[i].SetActive(false);
-            horizontalGameOverLines[i].SetActive(false);
-        }
-
-        for (int i = 0; i < diagonalGameOverLines.Length; i++)
-        {
-            diagonalGameOverLines[i].SetActive(false);
         }
     }
 
@@ -130,7 +109,35 @@ public class GameOverController : CheckerWinCombinations
         }
     }
 
-    private void ResetGameOverLines()
+    public void ResetGame()
+    {
+        GameController.ResetGame = true;
+
+        if (currentGameMode == gameMode2D)
+        {
+            ResetGameOverLines2D();
+        }
+        else
+        {
+            ResetGameOverLines3D();
+        }
+    }
+
+    private void ResetGameOverLines2D()
+    {
+        for (int i = 0; i < sizeLineGrid; i++)
+        {
+            verticalGameOverLines[i].SetActive(false);
+            horizontalGameOverLines[i].SetActive(false);
+        }
+
+        for (int i = 0; i < diagonalGameOverLines.Length; i++)
+        {
+            diagonalGameOverLines[i].SetActive(false);
+        }
+    }
+
+    private void ResetGameOverLines3D()
     {
         for (int i = 0; i < verticalGameOverLines.Length; i++)
         {
@@ -161,20 +168,6 @@ public class GameOverController : CheckerWinCombinations
         {
             buttonsStatus[counter] = item.GetComponent<Button3D>();
             counter++;
-        }
-    }
-
-    public void ResetGame()
-    {
-        GameController.ResetGame = true;
-
-        if (currentGameMode == gameMode2D)
-        {
-            HideGameOverLines();
-        }
-        else
-        {
-            ResetGameOverLines();
         }
     }
 

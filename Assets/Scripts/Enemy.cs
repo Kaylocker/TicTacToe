@@ -35,6 +35,7 @@ public class Enemy : MonoBehaviour
             SetButtonsStatusArray();
         }
     }
+
     private void Update()
     {
         myTurn = GameController.CheckEnemyTurn();
